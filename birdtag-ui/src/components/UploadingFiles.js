@@ -5,14 +5,12 @@ function UploadForm() {
   const [previewURL, setPreviewURL] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
 
-  // Replace with your real deployed API Gateway REST endpoint:
   const API_ENDPOINT = 'https://fqy43odnm8.execute-api.us-east-1.amazonaws.com/A3/uploads';
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
 
-    // Preview image
     if (file && file.type.startsWith('image')) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -26,41 +24,60 @@ function UploadForm() {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      setUploadStatus('No file selected.');
+      setUploadStatus(' No file selected.');
       return;
     }
 
+    setUploadStatus(' Requesting upload URL...');
+
     try {
-      setUploadStatus('Uploading...');
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fileName: selectedFile.name,
+          contentType: selectedFile.type
+        })
+      });
 
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64String = reader.result.split(',')[1]; // remove data prefix
+      const result = await response.json();
 
-        const response = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            fileName: selectedFile.name,
-            contentType: selectedFile.type,
-            fileContent: base64String
-          })
-        });
+      if (response.status === 400) {
+        setUploadStatus('Upload rejected: ' + result.error);
+        return;
+      }
 
-        const result = await response.json();
-        if (response.ok) {
-          setUploadStatus('Upload successful!');
-        } else {
-          setUploadStatus(`Upload failed: ${result.error}`);
-        }
-      };
+      if (response.status === 409) {
+        setUploadStatus(' File already exists: ' + result.error);
+        return;
+      }
 
-      reader.readAsDataURL(selectedFile);
-    } catch (err) {
-      console.error(err);
-      setUploadStatus('Upload failed.');
+      const presignedUrl = result.url;
+      if (!presignedUrl) {
+        throw new Error('No presigned URL returned from server.');
+      }
+
+      setUploadStatus(' Uploading to S3...');
+
+      const uploadResponse = await fetch(presignedUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': selectedFile.type
+        },
+        body: selectedFile
+      });
+
+      if (uploadResponse.ok) {
+        setUploadStatus(' File uploaded successfully!');
+      } else {
+        setUploadStatus(` Upload failed. S3 responded with status ${uploadResponse.status}`);
+      }
+
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadStatus(' Network or server error during upload.');
     }
   };
 
