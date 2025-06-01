@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import UploadForm from './components/UploadingFiles';
+import SpeciesSearch from './components/SpeciesSearch.js';
 
 function App() {
   // return (
@@ -26,6 +27,8 @@ function App() {
     <div className="App">
       <h1>BirdTag App</h1>
       <UploadForm />
+      <hr/>
+      <SpeciesSearch />
     </div>
   );
 }

@@ -5,7 +5,7 @@ function UploadForm() {
   const [previewURL, setPreviewURL] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
 
-  const API_ENDPOINT = 'https://fqy43odnm8.execute-api.us-east-1.amazonaws.com/A3/uploads';
+  const API_ENDPOINT = 'https://hrkfkqtxn2.execute-api.ap-southeast-2.amazonaws.com/a3uploading/uploads';
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
