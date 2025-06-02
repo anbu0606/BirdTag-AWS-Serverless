@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 
 function SpeciesSearch() {
-  const [species, setSpecies] = useState('');
+  const [speciesInput, setSpeciesInput] = useState('');
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState('');
 
   const API_URL = 'https://2qiti236gb.execute-api.ap-southeast-2.amazonaws.com/searching/speciessearching';
 
   const handleSearch = async () => {
-    if (!species) {
-      setStatus('Please enter a species name');
+    const speciesList = speciesInput
+      .split(',')
+      .map(tag => tag.trim().toLowerCase())
+      .filter(Boolean); // remove empty entries
+
+    if (speciesList.length === 0) {
+      setStatus('Please enter at least one species');
       return;
     }
 
@@ -18,11 +23,11 @@ function SpeciesSearch() {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tags: [species.toLowerCase()] })
+        body: JSON.stringify({ tags: speciesList })
       });
 
       const result = await response.json();
-      const parsed = JSON.parse(result.body); // handle double-encoded JSON
+      const parsed = JSON.parse(result.body);
       setResults(parsed.links);
       setStatus('');
     } catch (err) {
@@ -36,21 +41,26 @@ function SpeciesSearch() {
       <h3>Search Files by Bird Species</h3>
       <input
         type="text"
-        value={species}
-        onChange={e => setSpecies(e.target.value)}
-        placeholder="e.g. crow"
+        value={speciesInput}
+        onChange={e => setSpeciesInput(e.target.value)}
+        placeholder='e.g. "crow" or "crow, pigeon"'
+        style={{ width: '300px' }}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} style={{ marginLeft: '10px' }}>Search</button>
       <p>{status}</p>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {results.map((url, index) => (
-          <div key={index} style={{ margin: '10px' }}>
-            {url.includes('thumbnail') ? (
-              <img src={url} alt="thumbnail" width="150" />
-            ) : (
-              <a href={url} target="_blank" rel="noreferrer">Download File</a>
-            )}
+        {results.map((item, index) => (
+          <div key={index} style={{ margin: '10px', textAlign: 'center' }}>
+            {item.type === 'image' ? (
+              <a href={item.full} target="_blank" rel="noopener noreferrer">
+                <img src={item.thumb} alt="thumbnail" width="150" />
+              </a>
+            ) : item.type === 'video' ? (
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
+                Download Video
+              </a>
+            ) : null}
           </div>
         ))}
       </div>
