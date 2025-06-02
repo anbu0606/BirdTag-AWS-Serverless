@@ -4,6 +4,7 @@ import React from 'react';
 import UploadForm from './components/UploadingFiles';
 import SpeciesSearch from './components/SpeciesSearch.js';
 import BirdTagSearch from './components/TagBasedSearch.js';
+import ThumbnailSearch from './components/ThumbnailSearch.js';
 import { useAuth } from "react-oidc-context";
 
 function App() {
@@ -51,6 +52,8 @@ function App() {
       <SpeciesSearch />
       <hr />
       <BirdTagSearch />
+      <hr />
+      <ThumbnailSearch />
     </div>
   );
 }
