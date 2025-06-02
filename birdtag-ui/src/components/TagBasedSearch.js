@@ -34,12 +34,12 @@ function BirdTagSearch() {
       
     } catch (err) {
       setStatus('Error fetching data');
-      console.error(err);
+      console.error('Fetch error:', err);
     }
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
       <h2>🐦 Bird Search</h2>
       
       <div style={{ marginBottom: '20px' }}>
@@ -67,43 +67,66 @@ function BirdTagSearch() {
 
       <p>{status}</p>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {results.map((item, index) => (
-          <div key={index} style={{ 
-            border: '1px solid #ddd', 
-            padding: '10px', 
-            borderRadius: '5px',
-            width: '200px'
+          <div key={index} style={{  
+            padding: '15px', 
+            borderRadius: '10px',
+            width: '350px',
+            backgroundColor: 'white'
           }}>
+            {/* Image or Media */}
             {item.fileType === 'image' ? (
               <img 
                 src={item.url} 
                 alt={item.fileName}
-                width="180" 
-                style={{ cursor: 'pointer' }}
+                width="300" 
+                style={{ cursor: 'pointer', marginBottom: '15px' }}
                 onClick={() => window.open(item.fullUrl, '_blank')}
               />
             ) : (
               <div style={{ 
-                width: '180px', 
-                height: '120px', 
-                backgroundColor: '#f0f0f0',
+                width: '300px', 
+                height: '150px', 
+                backgroundColor: '#ddd',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                marginBottom: '15px'
               }}>
                 <a href={item.fullUrl} target="_blank" rel="noreferrer">
-                  📹 Download Video
+                  {item.fileType === 'video' ? '📹 Video' : '🎵 Audio'}
                 </a>
               </div>
             )}
             
-            <div style={{ marginTop: '5px', fontSize: '12px' }}>
-              <div><strong>{item.fileName}</strong></div>
-              <div>Birds: {Object.entries(item.detectedBirds).map(([bird, cnt]) => 
-                `${bird}(${cnt})`
-              ).join(', ')}</div>
+            {/* Basic Info */}
+            <div style={{ marginBottom: '15px', fontSize: '16px' }}>
+              <div style={{ fontWeight: 'bold' }}>{item.fileName}</div>
+              <div>Type: {item.fileType}</div>
             </div>
+            
+            {/* THUMBNAIL URL */}
+            <div style={{ 
+              backgroundColor: '#d1ecf1', 
+              color: 'white',
+              padding: '15px', 
+              marginBottom: '15px',
+              fontSize: '14px',
+              fontWeight: 'bold'
+            }}>
+              THUMBNAIL URL:
+              <div style={{ 
+                backgroundColor: 'white', 
+                color: 'black', 
+                padding: '10px', 
+                marginTop: '5px',
+                wordBreak: 'break-all'
+              }}>
+                {item.url || 'NO URL'}
+              </div>
+            </div>
+            
           </div>
         ))}
       </div>
