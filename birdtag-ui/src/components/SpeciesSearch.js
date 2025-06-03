@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { useAuth } from "react-oidc-context"; //import useAuth to use the authentication context
 
 function SpeciesSearch() {
   const [speciesInput, setSpeciesInput] = useState('');
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState('');
 
+  //extract the token from auth.user
+  const auth = useAuth();
+  const token = auth.user?.id_token;
+
   const API_URL = 'https://2qiti236gb.execute-api.ap-southeast-2.amazonaws.com/searching/speciessearching';
+  
 
   const handleSearch = async () => {
     const speciesList = speciesInput
@@ -22,7 +28,8 @@ function SpeciesSearch() {
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // update fetch to use the token 
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
         body: JSON.stringify({ tags: speciesList })
       });
 
