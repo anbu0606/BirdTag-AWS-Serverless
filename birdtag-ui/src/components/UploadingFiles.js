@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+import { useAuth } from "react-oidc-context"; //import useAuth to use the authentication context
+
 
 function UploadForm() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
+  
+  //extract the token from auth.user
+    const auth = useAuth();
+    const token = auth.user?.id_token;
 
   const API_ENDPOINT = 'https://hrkfkqtxn2.execute-api.ap-southeast-2.amazonaws.com/a3uploading/uploads';
 
@@ -33,9 +39,7 @@ function UploadForm() {
     try {
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
         body: JSON.stringify({
           fileName: selectedFile.name,
           contentType: selectedFile.type
