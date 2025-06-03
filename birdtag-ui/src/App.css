@@ -36,3 +36,110 @@
     transform: rotate(360deg);
   }
 }
+
+/* bird animation: */
+
+.bird-animation-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.bird {
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg');
+  background-size: auto 100%;
+  width: 88px;
+  height: 125px;
+  animation: fly-cycle 1s steps(10) infinite;
+}
+
+.bird-one { animation-delay: -0.5s; }
+.bird-two { animation-delay: -0.75s; animation-duration: 0.9s; }
+.bird-three { animation-delay: -0.25s; animation-duration: 1.25s; }
+.bird-four { animation-delay: -0.5s; animation-duration: 1.1s; }
+
+.bird-container {
+  position: absolute;
+  top: 10%;
+  left: -3%;
+  transform: scale(0) translateX(-10vw);
+  animation: fly-right-one linear infinite;
+}
+
+.bird-container-one { animation-duration: 15s; }
+.bird-container-two { animation-duration: 16s; animation-delay: 1s; }
+.bird-container-three { animation-duration: 14.6s; animation-delay: 9.5s; }
+.bird-container-four { animation-duration: 16s; animation-delay: 10.25s; }
+
+@keyframes fly-cycle {
+  100% { background-position: -900px 0; }
+}
+
+@keyframes fly-right-one {
+  0% { transform: scale(0.3) translateX(-10vw); }
+  30% { transform: translateY(4vh) translateX(50vw) scale(0.6); }
+  60% { transform: translateY(0vh) translateX(110vw) scale(0.6); }
+  100% { transform: translateY(0vh) translateX(110vw) scale(0.6); }
+}
+
+.menu {
+  margin-top: 20px;
+}
+
+.menu button {
+  margin: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+}
+
+.feature-panel {
+  margin-top: 30px;
+}
+
+
+.button-73 {
+  appearance: none;
+  background-color: #FFFFFF;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #ADCFFF 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.24px;
+  margin: 0.5rem;
+  outline: none;
+  padding: 1rem 1.3rem;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-73:hover {
+  background-color: #FFC229;
+  box-shadow: #FF6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+
+.button-73:active {
+  transform: scale(1.025);
+}
+
+@media (min-width: 768px) {
+  .button-73 {
+    font-size: 1.5rem;
+    padding: 0.75rem 2rem;
+  }
+}

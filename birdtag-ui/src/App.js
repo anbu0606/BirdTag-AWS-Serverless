@@ -1,37 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import UploadForm from './components/UploadingFiles';
-import SpeciesSearch from './components/SpeciesSearch.js';
-import BirdTagSearch from './components/TagBasedSearch.js';
-import ThumbnailSearch from './components/ThumbnailSearch.js';
-import { useAuth } from "react-oidc-context";
+import SpeciesSearch from './components/SpeciesSearch';
+import BirdTagSearch from './components/TagBasedSearch';
+import ThumbnailSearch from './components/ThumbnailSearch';
+import { useAuth } from 'react-oidc-context';
 
 function App() {
   const auth = useAuth();
+  const [selectedFeature, setSelectedFeature] = useState(null);
 
   const signOutRedirect = () => {
-    const clientId = "4h5dp0m9cjkkr2ld7lc98fhufe";
-    const logoutUri = "http://localhost:3000";
-    const cognitoDomain = "https://ap-southeast-2frkp14bgu.auth.ap-southeast-2.amazoncognito.com";
+    const clientId = '4h5dp0m9cjkkr2ld7lc98fhufe';
+    const logoutUri = 'http://localhost:3000';
+    const cognitoDomain = 'https://ap-southeast-2frkp14bgu.auth.ap-southeast-2.amazoncognito.com';
+
     auth.removeUser();
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
-  
-    // Remove local tokens
-    
-
-  // Redirect to the logout endpoint, and after logout, automatically redirect back to Hosted UI login
-    
   };
 
-  if (auth.isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (auth.isLoading) return <div>Loading...</div>;
+  if (auth.error) return <div>Encountered error... {auth.error.message}</div>;
 
-  if (auth.error) {
-    return <div>Encountering error... {auth.error.message}</div>;
-  }
-  
   if (!auth.isAuthenticated) {
     return (
       <div className="App">
@@ -42,44 +32,56 @@ function App() {
     );
   }
 
+  const renderFeature = () => {
+    switch (selectedFeature) {
+      case 'upload':
+        return <UploadForm />;
+      case 'speciesSearch':
+        return <SpeciesSearch />;
+      case 'tagSearch':
+        return <BirdTagSearch />;
+      case 'thumbnailSearch':
+        return <ThumbnailSearch />;
+      default:
+        return <p>Select a feature from the menu above to begin</p>;
+    }
+  };
+
   return (
-    <div className="App">
-      <h1>BirdTag App</h1>
-      <p>Welcome, {auth.user?.profile.email}</p>
-      <button onClick={signOutRedirect}>Sign Out</button>
-      <UploadForm />
-      <hr />
-      <SpeciesSearch />
-      <hr />
-      <BirdTagSearch />
-      <hr />
-      <ThumbnailSearch />
-    </div>
+    <>
+      {/* Flying birds background */}
+      <div className="bird-animation-bg">
+        <div className="bird-container bird-container-one">
+          <div className="bird bird-one"></div>
+        </div>
+        <div className="bird-container bird-container-two">
+          <div className="bird bird-two"></div>
+        </div>
+        <div className="bird-container bird-container-three">
+          <div className="bird bird-three"></div>
+        </div>
+        <div className="bird-container bird-container-four">
+          <div className="bird bird-four"></div>
+        </div>
+      </div>
+
+      {/*  Main App UI */}
+      <div className="App">
+        <h1> BirdTag App</h1>
+        <p>Welcome, {auth.user?.profile.email}</p>
+        <button onClick={signOutRedirect}>Sign Out</button>
+
+        <div className="menu">
+          <button className="button-73" onClick={() => setSelectedFeature('upload')}>Upload Media</button>
+          <button className="button-73" onClick={() => setSelectedFeature('speciesSearch')}>Search by Species</button>
+          <button className="button-73" onClick={() => setSelectedFeature('tagSearch')}>Search by Tags</button>
+          <button className="button-73" onClick={() => setSelectedFeature('thumbnailSearch')}>Full Image from Thumbnail</button>
+        </div>
+
+        <div className="feature-panel">{renderFeature()}</div>
+      </div>
+    </>
   );
 }
 
 export default App;
-
-
-
-
-
-
-
-//   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
