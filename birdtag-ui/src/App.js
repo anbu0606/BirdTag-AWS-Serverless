@@ -24,10 +24,24 @@ function App() {
 
   if (!auth.isAuthenticated) {
     return (
-      <div className="App">
-        <h1>BirdTag App</h1>
-        <p>You must sign in to continue</p>
-        <button onClick={() => auth.signinRedirect()}>Sign In</button>
+      <div className="not-auth">
+        <div className = "content-start">
+          <h1>Welcome to the BirdTag App</h1>
+          <p>Help us protect and understand our feathered friends! 
+             Our app enables the following:
+          </p>
+          <div className='left-align-list'>
+            <ul>
+              <li>Upload images, audio, and video of bird sightings</li>
+              <li>Our system auto-tags each file with the bird species it detects</li>
+              <li>Search for media by species name</li>
+              <li>All files are stored securely and centrally to support bird research and conservation</li>
+            </ul>
+          </div>
+          <br></br>
+          <br></br>
+          <button className = "first-button" onClick={() => auth.signinRedirect()}>Get Started!</button>
+        </div>
       </div>
     );
   }

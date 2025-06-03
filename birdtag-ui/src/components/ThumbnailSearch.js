@@ -176,7 +176,7 @@ function ThumbnailSearch() {
               fontSize: '24px',
               margin: '0 auto'
             }}>
-              🖼️ Image not available
+              
             </div>
           </div>
 
@@ -194,7 +194,7 @@ function ThumbnailSearch() {
                 fontSize: '14px'
               }}
             >
-              🔍 View Full Size
+           
             </button>
 
           </div>
