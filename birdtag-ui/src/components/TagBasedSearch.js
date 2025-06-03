@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from "react-oidc-context"; //import useAuth to use the authentication context
 
 function BirdTagSearch() {
   const [species, setSpecies] = useState('');
@@ -6,6 +7,10 @@ function BirdTagSearch() {
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState('');
 
+  //extract the token from auth.user
+  const auth = useAuth();
+  const token = auth.user?.id_token;
+  
   const API_URL = 'https://9fm7obam2b.execute-api.ap-southeast-2.amazonaws.com/tagbasedsearch/tagbasedsearchAPI';
 
   const handleSearch = async () => {
@@ -18,7 +23,7 @@ function BirdTagSearch() {
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
         body: JSON.stringify({ [species.toLowerCase()]: parseInt(count) })
       });
 

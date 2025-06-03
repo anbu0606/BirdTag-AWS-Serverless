@@ -93,6 +93,14 @@ function App() {
         </div>
 
         <div className="feature-panel">{renderFeature()}</div>
+
+        
+        <h3> Not implemented yet: </h3>
+        <h2>Subscribe to Bird Tag Notifications</h2>
+        <input type="text" placeholder="Enter bird species e.g. crow" />
+        <button>Subscribe</button>
+        <p>We will notify you by email when new media for this bird is added.</p>
+
       </div>
     </>
   );
