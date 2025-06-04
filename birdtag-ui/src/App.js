@@ -5,12 +5,9 @@ import SpeciesSearch from './components/SpeciesSearch';
 import BirdTagSearch from './components/TagBasedSearch';
 import ThumbnailSearch from './components/ThumbnailSearch';
 import BulkTagging from './components/ManualTagging';
-<<<<<<< HEAD
 import FileBasedTagging from './components/FileUploadSearch';
-
-=======
 import DeleteFiles from './components/DeleteFiles.js';
->>>>>>> 81b7988d4e3182dbd5d67c9ad984f484bd4e125c
+
 import { useAuth } from 'react-oidc-context';
 
 function App() {
@@ -65,13 +62,10 @@ function App() {
         return <ThumbnailSearch />;
       case 'bulkTagging':
         return <BulkTagging />;
-<<<<<<< HEAD
       case 'fileuploadtag':
         return <FileBasedTagging />;
-=======
       case 'deletefiles':
         return <DeleteFiles />;
->>>>>>> 81b7988d4e3182dbd5d67c9ad984f484bd4e125c
       default:
         return <p>Select a feature from the menu above to begin</p>;
     }
@@ -107,12 +101,8 @@ function App() {
           <button className="button-73" onClick={() => setSelectedFeature('tagSearch')}>Search by Tags</button>
           <button className="button-73" onClick={() => setSelectedFeature('thumbnailSearch')}>Full Image from Thumbnail</button>
           <button className="button-73" onClick={() => setSelectedFeature('bulkTagging')}>Bulk Tag Updater</button>
-<<<<<<< HEAD
           <button className="button-73" onClick={() => setSelectedFeature('fileuploadtag')}>File Based Search</button>
-
-=======
           <button className="button-73" onClick={() => setSelectedFeature('deletefiles')}>Delete Files permanently</button>
->>>>>>> 81b7988d4e3182dbd5d67c9ad984f484bd4e125c
         </div>
 
         <div className="feature-panel">{renderFeature()}</div>
