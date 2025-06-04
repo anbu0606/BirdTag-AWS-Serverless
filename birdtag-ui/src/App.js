@@ -5,7 +5,7 @@ import SpeciesSearch from './components/SpeciesSearch';
 import BirdTagSearch from './components/TagBasedSearch';
 import ThumbnailSearch from './components/ThumbnailSearch';
 import BulkTagging from './components/ManualTagging';
-
+import DeleteFiles from './components/DeleteFiles.js';
 import { useAuth } from 'react-oidc-context';
 
 function App() {
@@ -60,6 +60,8 @@ function App() {
         return <ThumbnailSearch />;
       case 'bulkTagging':
         return <BulkTagging />;
+      case 'deletefiles':
+        return <DeleteFiles />;
       default:
         return <p>Select a feature from the menu above to begin</p>;
     }
@@ -95,7 +97,7 @@ function App() {
           <button className="button-73" onClick={() => setSelectedFeature('tagSearch')}>Search by Tags</button>
           <button className="button-73" onClick={() => setSelectedFeature('thumbnailSearch')}>Full Image from Thumbnail</button>
           <button className="button-73" onClick={() => setSelectedFeature('bulkTagging')}>Bulk Tag Updater</button>
-
+          <button className="button-73" onClick={() => setSelectedFeature('deletefiles')}>Delete Files permanently</button>
         </div>
 
         <div className="feature-panel">{renderFeature()}</div>
