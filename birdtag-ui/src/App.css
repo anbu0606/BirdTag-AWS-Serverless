@@ -7,7 +7,7 @@
   height: 100vh;
   width: 100vw; 
   text-align: center;
-  background-image: url(../img/startscreen.jpg);
+  background-image: "startscreen.jpg";
   background-size: cover;
   background-position: center;  
 }

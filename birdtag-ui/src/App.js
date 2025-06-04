@@ -4,6 +4,8 @@ import UploadForm from './components/UploadingFiles';
 import SpeciesSearch from './components/SpeciesSearch';
 import BirdTagSearch from './components/TagBasedSearch';
 import ThumbnailSearch from './components/ThumbnailSearch';
+import BulkTagging from './components/ManualTagging';
+
 import { useAuth } from 'react-oidc-context';
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
         return <BirdTagSearch />;
       case 'thumbnailSearch':
         return <ThumbnailSearch />;
+      case 'bulkTagging':
+        return <BulkTagging />;
       default:
         return <p>Select a feature from the menu above to begin</p>;
     }
@@ -90,6 +94,8 @@ function App() {
           <button className="button-73" onClick={() => setSelectedFeature('speciesSearch')}>Search by Species</button>
           <button className="button-73" onClick={() => setSelectedFeature('tagSearch')}>Search by Tags</button>
           <button className="button-73" onClick={() => setSelectedFeature('thumbnailSearch')}>Full Image from Thumbnail</button>
+          <button className="button-73" onClick={() => setSelectedFeature('bulkTagging')}>Bulk Tag Updater</button>
+
         </div>
 
         <div className="feature-panel">{renderFeature()}</div>
