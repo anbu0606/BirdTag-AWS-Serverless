@@ -5,6 +5,7 @@ function SpeciesSearch() {
   const [speciesInput, setSpeciesInput] = useState('');
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState('');
+  
 
   //extract the token from auth.user
   const auth = useAuth();

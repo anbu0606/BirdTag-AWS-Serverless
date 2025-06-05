@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 
 function BulkTagUpdater() {
-  const auth = useAuth();
+  
 
   const [urls, setUrls] = useState('');
   const [tags, setTags] = useState('');
   const [operation, setOperation] = useState(1); 
   const [status, setStatus] = useState('');
+
+  //extract the token from auth.user
+  const auth = useAuth();
+  const token = auth.user?.id_token;
 
   const API_URL = 'https://opjoc8qoq6.execute-api.ap-southeast-2.amazonaws.com/bulktag/manualtagging';
 

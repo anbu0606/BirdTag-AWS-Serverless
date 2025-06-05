@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { useAuth } from "react-oidc-context"; //import useAuth to use the authentication context
 
 function FileTagSearch() {
   const [file, setFile] = useState(null);
   const [fileType, setFileType] = useState('');
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState('');
+
+  //extract the token from auth.user
+  const auth = useAuth();
+  const token = auth.user?.id_token;
 
   // Your deployed endpoints
   const API_IMAGE_VIDEO = 'https://87ia3a0c0c.execute-api.ap-southeast-2.amazonaws.com/ImageVideoUpload/query4';
@@ -52,9 +57,7 @@ function FileTagSearch() {
 
         const response = await fetch(apiUrl, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
           body: JSON.stringify(payload)
         });
 
