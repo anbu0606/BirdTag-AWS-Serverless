@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
+import { ClipLoader } from 'react-spinners';
+import './ManualTagging.css';
 
 function BulkTagUpdater() {
-  
-
   const [urls, setUrls] = useState('');
   const [tags, setTags] = useState('');
-  const [operation, setOperation] = useState(1); 
+  const [operation, setOperation] = useState(1);
   const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  //extract the token from auth.user
   const auth = useAuth();
-  const token = auth.user?.id_token;
-
   const API_URL = 'https://opjoc8qoq6.execute-api.ap-southeast-2.amazonaws.com/bulktag/manualtagging';
 
   const handleSubmit = async () => {
@@ -36,7 +34,6 @@ function BulkTagUpdater() {
       return;
     }
 
-    
     for (let i = 1; i < tagArray.length; i += 2) {
       if (isNaN(tagArray[i])) {
         setStatus(`Count value for tag "${tagArray[i - 1]}" must be a number.`);
@@ -44,7 +41,8 @@ function BulkTagUpdater() {
       }
     }
 
-    setStatus('Sending request...');
+    setLoading(true);
+    setStatus('');
 
     try {
       const response = await fetch(API_URL, {
@@ -70,20 +68,21 @@ function BulkTagUpdater() {
     } catch (err) {
       console.error(err);
       setStatus('Network error.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
-      <h3> Bulk Tag Updater</h3>
+    <div className="bulk-tag-container">
+      <h2>Bulk Tag Updater</h2>
 
       <label>S3 URLs (one per line):</label>
       <textarea
         value={urls}
         onChange={(e) => setUrls(e.target.value)}
         rows={6}
-        placeholder="Enter you S3 url here!"
-        style={{ width: '100%', marginBottom: '1rem' }}
+        placeholder="https://s3-url-1...\nhttps://s3-url-2..."
       />
 
       <label>Tags with Counts (comma-separated):</label>
@@ -91,11 +90,10 @@ function BulkTagUpdater() {
         type="text"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
-        placeholder='e.g. crow,2,pigeon,1'
-        style={{ width: '100%', marginBottom: '1rem' }}
+        placeholder="e.g. crow,2,pigeon,1"
       />
 
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="radio-options">
         <label>
           <input
             type="radio"
@@ -104,7 +102,7 @@ function BulkTagUpdater() {
             onChange={() => setOperation(1)}
           />{' '}
           Add Tags
-        </label>{' '}
+        </label>
         <label>
           <input
             type="radio"
@@ -116,11 +114,11 @@ function BulkTagUpdater() {
         </label>
       </div>
 
-      <button className="button-73" onClick={handleSubmit}>
-        Submit
+      <button onClick={handleSubmit} className="submit-btn" disabled={loading}>
+        {loading ? <ClipLoader size={18} color="#fff" /> : 'Submit'}
       </button>
 
-      <p style={{ marginTop: '1rem' }}>{status}</p>
+      {status && <p className="status-text">{status}</p>}
     </div>
   );
 }

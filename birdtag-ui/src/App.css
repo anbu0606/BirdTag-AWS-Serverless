@@ -1,34 +1,54 @@
-.App {
-  text-align: center;
-  
+/* GLOBAL BACKGROUND: Light Grey */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f2f2;
+  min-height: 100vh;
+  color: #333;
 }
 
-.not-auth {  
-  height: 100vh;
-  width: 100vw; 
-  text-align: center;
-  background-image: "startscreen.jpg";
-  background-size: cover;
-  background-position: center;  
+/* Optional soft overlay */
+.page-overlay {
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.6), rgba(240, 240, 240, 0.8));
+  min-height: 100vh;
+  padding: 2rem;
 }
-.content-start{
+
+/* Main App container */
+.App {
+  text-align: center;
+  color: #222;
+}
+
+/* Unauthenticated start screen */
+.not-auth {
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+.content-start {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.9); /* semi-transparent white */
+  background-color: #ffffff;
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* soft shadow */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 750px;
   height: 450px;
   font-size: 1.2rem;
+  color: #222;
 }
+
+/* Info list */
 .left-align-list {
   text-align: left;
   margin: 0 auto;
-  max-width: 600px; /* Keep it readable and not stretched full width */
+  max-width: 600px;
   font-size: 1.2rem;
 }
 
@@ -37,7 +57,7 @@
   list-style-position: inside;
 }
 
-
+/* Large call-to-action button */
 .first-button {
   margin-top: 100px;
   width: 80%;
@@ -46,51 +66,12 @@
   border: none;
   color: white;
   padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 20px;
   margin: 4px 2px;
   cursor: pointer;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* bird animation: */
-
+/* =================== BIRD ANIMATION =================== */
 .bird-animation-bg {
   position: fixed;
   top: 0;
@@ -100,6 +81,7 @@
   overflow: hidden;
   z-index: -1;
   pointer-events: none;
+  opacity: 0.7;
 }
 
 .bird {
@@ -108,6 +90,7 @@
   width: 88px;
   height: 125px;
   animation: fly-cycle 1s steps(10) infinite;
+  filter: brightness(0.6);
 }
 
 .bird-one { animation-delay: -0.5s; }
@@ -139,6 +122,34 @@
   100% { transform: translateY(0vh) translateX(110vw) scale(0.6); }
 }
 
+/* =================== INPUTS / FORMS =================== */
+
+textarea,
+input[type="text"] {
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.05) inset;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  color: #333;
+}
+
+h3, h4 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Responsive layout buttons */
 .menu {
   margin-top: 20px;
 }
@@ -149,49 +160,46 @@
   font-size: 16px;
 }
 
+/* Feature box spacing */
 .feature-panel {
   margin-top: 30px;
 }
 
-
+/* =================== BUTTON STYLE =================== */
 .button-73 {
   appearance: none;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 40em;
-  border-style: none;
-  box-shadow: #ADCFFF 0 -12px 6px inset;
-  box-sizing: border-box;
-  color: #000000;
+  border: 2px solid #0F52BA;
+  color: #0F52BA;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system, sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: -0.24px;
-  margin: 0.5rem;
-  outline: none;
-  padding: 1rem 1.3rem;
+  padding: 0.8rem 1.4rem;
   text-align: center;
-  text-decoration: none;
-  transition: all 0.15s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  transition: all 0.2s ease-in-out;
 }
 
 .button-73:hover {
-  background-color: #FFC229;
-  box-shadow: #FF6314 0 -6px 8px inset;
-  transform: scale(1.125);
+  background-color: #0F52BA;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+
 .button-73:active {
-  transform: scale(1.025);
+  transform: scale(1.02);
+  background-color: #0F52BA;
+  color: white;
+  border: 2px solid #0F52BA;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 @media (min-width: 768px) {
   .button-73 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding: 0.75rem 2rem;
   }
 }
