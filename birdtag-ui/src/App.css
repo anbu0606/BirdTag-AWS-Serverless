@@ -197,6 +197,32 @@ h3, h4 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
+/* =================== ACTIVE/SELECTED BUTTON STATE =================== */
+.button-73.active {
+  background-color: #0F52BA !important;
+  color: #ffffff !important;
+  border: 2px solid #0F52BA !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(15, 82, 186, 0.3);
+}
+
+/* Keep active state on hover */
+.button-73.active:hover {
+  background-color: #0A3D8A !important;
+  border-color: #0A3D8A !important;
+  transform: scale(1.08);
+  box-shadow: 0 6px 15px rgba(15, 82, 186, 0.4);
+}
+
+/* Prevent hover effects on non-active buttons when one is active */
+.button-73:not(.active):hover {
+  background-color: #0F52BA;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+
 @media (min-width: 768px) {
   .button-73 {
     font-size: 1.2rem;

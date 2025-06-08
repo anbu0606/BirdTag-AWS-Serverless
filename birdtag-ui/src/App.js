@@ -97,13 +97,13 @@ function App() {
         <button onClick={signOutRedirect}>Sign Out</button>
 
         <div className="menu">
-          <button className="button-73" onClick={() => setSelectedFeature('upload')}>Upload Media</button>
-          <button className="button-73" onClick={() => setSelectedFeature('speciesSearch')}>Search by Species</button>
-          <button className="button-73" onClick={() => setSelectedFeature('tagSearch')}>Search by Tags</button>
-          <button className="button-73" onClick={() => setSelectedFeature('thumbnailSearch')}>Full Image from Thumbnail</button>
-          <button className="button-73" onClick={() => setSelectedFeature('bulkTagging')}>Bulk Tag Updater</button>
-          <button className="button-73" onClick={() => setSelectedFeature('fileuploadtag')}>File Based Search</button>
-          <button className="button-73" onClick={() => setSelectedFeature('deletefiles')}>Delete Files permanently</button>
+          <button className={`button-73 ${selectedFeature === 'upload' ? 'active' : ''}`} onClick={() => setSelectedFeature('upload')}>Upload Media</button>
+          <button className={`button-73 ${selectedFeature === 'speciesSearch' ? 'active' : ''}`} onClick={() => setSelectedFeature('speciesSearch')}>Search by Species</button>
+          <button className={`button-73 ${selectedFeature === 'tagSearch' ? 'active' : ''}`} onClick={() => setSelectedFeature('tagSearch')}>Search by Tags</button>
+          <button className={`button-73 ${selectedFeature === 'thumbnailSearch' ? 'active' : ''}`} onClick={() => setSelectedFeature('thumbnailSearch')}>Full Image from Thumbnail</button>
+          <button className={`button-73 ${selectedFeature === 'bulkTagging' ? 'active' : ''}`} onClick={() => setSelectedFeature('bulkTagging')}>Bulk Tag Updater</button>
+          <button className={`button-73 ${selectedFeature === 'fileuploadtag' ? 'active' : ''}`} onClick={() => setSelectedFeature('fileuploadtag')}>File Based Search</button>
+          <button className={`button-73 ${selectedFeature === 'deletefiles' ? 'active' : ''}`} onClick={() => setSelectedFeature('deletefiles')}>Delete Files permanently</button>
         </div>
 
         <div className="feature-panel">{renderFeature()}</div>
