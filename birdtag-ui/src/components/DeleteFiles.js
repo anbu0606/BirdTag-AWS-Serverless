@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from "react-oidc-context"; //import useAuth to use the authentication context
+import { useAuth } from "react-oidc-context";
+import './DeleteFiles.css';
 
 function DeleteFiles() {
   const [urls, setUrls] = useState(['']);
@@ -100,85 +101,45 @@ function DeleteFiles() {
     }
   };
 
-  // Sample URLs for testing
-  const sampleUrls = [
-    'https://g116-media-s3.s3.ap-southeast-2.amazonaws.com/image/example.jpg',
-    'https://g116-thumbnails-s3.s3.ap-southeast-2.amazonaws.com/thumbnail_images/example_thumb.jpg'
-  ];
-
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h3>🗑️ Delete Bird Media Files</h3>
-      <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
+    <div className="delete-files-container">
+      <h3>Delete Bird Media Files</h3>
+      <p className="description-text">
         Enter full S3 URLs to permanently delete files and their thumbnails
       </p>
 
       {/* Warning Notice */}
-      <div style={{
-        backgroundColor: '#fff3cd',
-        color: '#856404',
-        padding: '12px',
-        border: '1px solid #ffeaa7',
-        borderRadius: '5px',
-        marginBottom: '20px',
-        fontSize: '14px'
-      }}>
-        ⚠️ <strong>Warning:</strong> This action cannot be undone. Files will be permanently deleted from both S3 and the database.
+      <div className="warning-notice">
+         <strong>Warning:</strong> This action cannot be undone. Files will be permanently deleted from both S3 and the database.
       </div>
 
       {/* URL Input Fields */}
-      <div style={{ marginBottom: '20px' }}>
+      <div className="url-inputs-section">
         {urls.map((url, index) => (
-          <div key={index} style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            marginBottom: '10px',
-            justifyContent: 'center'
-          }}>
+          <div key={index} className="url-input-row">
             <input
               type="text"
               value={url}
               onChange={e => updateUrl(index, e.target.value)}
               onKeyPress={e => handleKeyPress(e, index)}
               placeholder="Enter full S3 URL (e.g. https://g116-media-s3.s3.ap-southeast-2.amazonaws.com/image/file.jpg)"
-              style={{ 
-                padding: '8px', 
-                width: '500px',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                marginRight: '10px'
-              }}
+              className="url-input"
             />
             
             {urls.length > 1 && (
               <button 
                 onClick={() => removeUrlField(index)}
-                style={{
-                  padding: '8px 12px',
-                  backgroundColor: '#dc3545',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  marginRight: '5px'
-                }}
+                className="remove-button"
                 title="Remove this URL"
               >
-                ✕
+                ×
               </button>
             )}
             
             {index === urls.length - 1 && (
               <button 
                 onClick={addUrlField}
-                style={{
-                  padding: '8px 12px',
-                  backgroundColor: '#28a745',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
+                className="add-button"
                 title="Add another URL"
               >
                 +
@@ -189,76 +150,40 @@ function DeleteFiles() {
       </div>
 
       {/* Action Buttons */}
-      <div style={{ marginBottom: '20px' }}>
+      <div className="action-buttons">
         <button 
           onClick={handleDelete}
           disabled={loading}
-          style={{
-            padding: '10px 25px',
-            backgroundColor: loading ? '#ccc' : '#dc3545',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            marginRight: '10px',
-            fontWeight: 'bold'
-          }}
+          className="delete-button"
         >
-          {loading ? 'Deleting...' : '🗑️ Delete Files'}
+          {loading ? 'Deleting...' : 'Delete Files'}
         </button>
 
         <button 
           onClick={clearAll}
-          style={{
-            padding: '10px 25px',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
+          className="clear-button"
         >
           Clear All
         </button>
       </div>
 
-      
       {/* Status Message */}
       {status && (
-        <div style={{ 
-          padding: '12px', 
-          backgroundColor: status.includes('Error') || status.includes('Failed') ? '#f8d7da' : 
-                           status.includes('Successfully') ? '#d4edda' : '#fff3cd',
-          color: status.includes('Error') || status.includes('Failed') ? '#721c24' :
-                 status.includes('Successfully') ? '#155724' : '#856404',
-          borderRadius: '5px',
-          marginBottom: '20px',
-          border: `1px solid ${status.includes('Error') || status.includes('Failed') ? '#f5c6cb' : 
-                                status.includes('Successfully') ? '#c3e6cb' : '#ffeaa7'}`
-        }}>
+        <div className={`status-message ${
+          status.includes('Error') || status.includes('Failed') ? 'status-error' : 
+          status.includes('Successfully') ? 'status-success' : 'status-warning'
+        }`}>
           {status}
         </div>
       )}
 
       {/* Results Display */}
       {results && (
-        <div style={{ 
-          maxWidth: '800px', 
-          margin: '0 auto',
-          textAlign: 'left'
-        }}>
+        <div className="results-container">
           {/* Summary */}
-          <div style={{
-            backgroundColor: '#f8f9fa',
-            padding: '15px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            border: '1px solid #dee2e6'
-          }}>
-            <h4 style={{ marginBottom: '10px' }}>📊 Deletion Summary</h4>
-            <div style={{ fontSize: '14px' }}>
+          <div className="summary-section">
+            <h4 className="summary-title">Deletion Summary</h4>
+            <div className="summary-stats">
               <div><strong>Total Requested:</strong> {results.summary.totalRequested}</div>
               <div style={{ color: '#28a745' }}><strong>Successfully Deleted:</strong> {results.summary.successfulDeletions}</div>
               <div style={{ color: '#dc3545' }}><strong>Failed:</strong> {results.summary.failedDeletions}</div>
@@ -267,20 +192,14 @@ function DeleteFiles() {
 
           {/* Successful Deletions */}
           {results.deleted && results.deleted.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <h4 style={{ color: '#28a745', marginBottom: '10px' }}>✅ Successfully Deleted</h4>
+            <div className="successful-deletions">
+              <h4 className="section-title success">Successfully Deleted</h4>
               {results.deleted.map((file, index) => (
-                <div key={index} style={{
-                  backgroundColor: '#d4edda',
-                  padding: '12px',
-                  borderRadius: '5px',
-                  marginBottom: '10px',
-                  border: '1px solid #c3e6cb'
-                }}>
-                  <div style={{ fontWeight: 'bold' }}>{file.fileName} ({file.fileType})</div>
-                  <div style={{ fontSize: '12px', color: '#155724', marginTop: '5px' }}>
+                <div key={index} className="deletion-item deletion-success">
+                  <div className="item-filename">{file.fileName} ({file.fileType})</div>
+                  <div className="item-details success">
                     <strong>Deleted from:</strong>
-                    <ul style={{ margin: '5px 0', paddingLeft: '20px' }}>
+                    <ul className="deleted-locations">
                       {file.deletedFrom.map((location, i) => (
                         <li key={i}>{location}</li>
                       ))}
@@ -293,18 +212,12 @@ function DeleteFiles() {
 
           {/* Failed Deletions */}
           {results.failed && results.failed.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <h4 style={{ color: '#dc3545', marginBottom: '10px' }}>❌ Failed Deletions</h4>
+            <div>
+              <h4 className="section-title error">Failed Deletions</h4>
               {results.failed.map((file, index) => (
-                <div key={index} style={{
-                  backgroundColor: '#f8d7da',
-                  padding: '12px',
-                  borderRadius: '5px',
-                  marginBottom: '10px',
-                  border: '1px solid #f5c6cb'
-                }}>
-                  <div style={{ fontWeight: 'bold' }}>{file.fileName}</div>
-                  <div style={{ fontSize: '12px', color: '#721c24', marginTop: '5px' }}>
+                <div key={index} className="deletion-item deletion-failed">
+                  <div className="item-filename">{file.fileName}</div>
+                  <div className="item-details error">
                     <strong>Error:</strong> {file.error}
                   </div>
                 </div>

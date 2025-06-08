@@ -1,0 +1,130 @@
+.thumbnail-search-container {
+  max-width: 700px;
+  margin: auto;
+  padding: 30px;
+  background: #f4fbfd;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.description-text {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.search-input-section {
+  margin-bottom: 20px;
+}
+
+.url-input {
+  padding: 10px;
+  width: 500px;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #007b9e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover:not(:disabled) {
+  background-color: #00617f;
+}
+
+.search-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.clear-button {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+  background-color: #545b62;
+}
+
+.status-message {
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.status-error {
+  color: red;
+}
+
+.status-success {
+  color: green;
+}
+
+.result-container {
+  max-width: 800px;
+  margin: 20px auto 0;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.result-title {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.image-preview {
+  margin-bottom: 20px;
+}
+
+.preview-image {
+  max-width: 400px;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #218838;
+}

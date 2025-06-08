@@ -77,7 +77,7 @@ function SpeciesSearch() {
               </a>
             ) : item.type === 'video' ? (
               <a href={item.url} target="_blank" rel="noopener noreferrer">
-                🎥 Download Video
+                 Download Video
               </a>
             ) : null}
           </div>

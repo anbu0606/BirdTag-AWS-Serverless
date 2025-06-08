@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from "react-oidc-context";
+import './FileUploadSearch.css';
 
 function FileTagSearch() {
   const [file, setFile] = useState(null);
@@ -132,7 +133,7 @@ function FileTagSearch() {
 
           const apiUrl = (fileType === 'audio') ? API_AUDIO : API_IMAGE_VIDEO;
           
-          setStatus('🔍 Analyzing file to detect bird species...');
+          setStatus('Analyzing file to detect bird species...');
 
           // Step 1: Get bird species from ML API
           const response = await fetch(apiUrl, {
@@ -145,7 +146,7 @@ function FileTagSearch() {
           });
 
           if (!response.ok) {
-            setStatus(`❌ Error analyzing file (${response.status})`);
+            setStatus(`Error analyzing file (${response.status})`);
             return;
           }
 
@@ -155,12 +156,12 @@ function FileTagSearch() {
           const extractionResult = extractTagsFromMLResponse(data);
           
           if (!extractionResult.success || extractionResult.tags.length === 0) {
-            setStatus('❌ No bird species detected in your file.');
+            setStatus('No bird species detected in your file.');
             return;
           }
 
           const detectedSpecies = extractionResult.tags;
-          setStatus(`🐦 Detected: ${detectedSpecies.join(', ')} - Searching for similar files...`);
+          setStatus(`Detected: ${detectedSpecies.join(', ')} - Searching for similar files...`);
 
           // Step 3: Search for similar files using detected species
           const searchPayload = {
@@ -177,7 +178,7 @@ function FileTagSearch() {
           });
 
           if (!searchResponse.ok) {
-            setStatus(`❌ Error searching database (${searchResponse.status})`);
+            setStatus(`Error searching database (${searchResponse.status})`);
             return;
           }
 
@@ -203,25 +204,25 @@ function FileTagSearch() {
             }));
             
             setResults(finalResults);
-            setStatus(`✅ Found ${finalResults.length} files containing: ${detectedSpecies.join(', ')}`);
+            setStatus(`Found ${finalResults.length} files containing: ${detectedSpecies.join(', ')}`);
           } else {
             setStatus(`No matching files found for: ${detectedSpecies.join(', ')}`);
           }
 
         } catch (error) {
           console.error('Processing error:', error);
-          setStatus(`❌ Error processing file: ${error.message}`);
+          setStatus(`Error processing file: ${error.message}`);
         }
       };
 
       reader.onerror = () => {
-        setStatus('❌ Error reading file.');
+        setStatus('Error reading file.');
       };
 
       reader.readAsDataURL(file);
     } catch (error) {
       console.error('File processing failed:', error);
-      setStatus(`❌ Failed to process file: ${error.message}`);
+      setStatus(`Failed to process file: ${error.message}`);
     }
   };
 
@@ -234,94 +235,73 @@ function FileTagSearch() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: 'auto' }}>
-      <h3>🔍 Search by File Tags</h3>
-      <p style={{ color: '#666', marginBottom: '20px' }}>
+    <div className="file-search-container">
+      <h3>Search by File Tags</h3>
+      <p className="description-text">
         Upload an image, video, or audio file to find similar bird content in our database.
       </p>
 
-      <div style={{ marginBottom: '20px' }}>
+      <div className="file-upload-section">
         <input 
           type="file" 
           accept="image/*,video/*,audio/*" 
           onChange={handleFileChange}
-          style={{ padding: '10px', border: '2px dashed #ccc', borderRadius: '5px', width: '100%' }}
+          className="file-input"
         />
       </div>
 
       <button 
-        className="button-73" 
+        className="analyze-button" 
         onClick={handleSubmit}
         disabled={!file || !fileType}
-        style={{ 
-          padding: '12px 24px', 
-          backgroundColor: file && fileType ? '#007bff' : '#ccc',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: file && fileType ? 'pointer' : 'not-allowed'
-        }}
       >
-        🚀 Analyze & Search
+        Analyze & Search
       </button>
 
-      <div style={{ margin: '20px 0', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '5px' }}>
+      <div className="status-container">
         <strong>Status:</strong> {status || 'Ready to analyze your file...'}
       </div>
 
       {file && (
-        <div style={{ fontSize: '12px', color: '#666', marginBottom: '20px', padding: '10px', backgroundColor: '#fff3cd', borderRadius: '5px' }}>
-          <strong>📁 File Info:</strong><br/>
+        <div className="file-info-container">
+          <strong>File Info:</strong><br/>
           Name: {file.name} ({fileType})<br/>
-          Size: {formatFileSize(file.size)} {file.size > 5 * 1024 * 1024 && '⚠️ Too large!'}
+          Size: {formatFileSize(file.size)} {file.size > 5 * 1024 * 1024 && 'Too large!'}
         </div>
       )}
 
-      <div style={{ marginTop: '30px' }}>
-        <h4>🎯 Matching Files ({results.length})</h4>
+      <div className="results-section">
+        <h4 className="results-title">Matching Files ({results.length})</h4>
         {results.length === 0 ? (
-          <p style={{ color: '#666', fontStyle: 'italic' }}>No results yet. Upload a file to get started!</p>
+          <p className="no-results-text">No results yet. Upload a file to get started!</p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+          <div className="results-grid">
             {results.map((item, idx) => (
-              <div key={idx} style={{ 
-                border: '1px solid #ddd', 
-                padding: '15px', 
-                borderRadius: '8px',
-                backgroundColor: '#fff',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}>
+              <div key={idx} className="result-card">
                 {item.type === 'image' && (
                   <div>
                     <img 
                       src={item.thumb} 
                       alt="thumbnail" 
-                      style={{ 
-                        width: '100%', 
-                        height: '180px', 
-                        objectFit: 'cover', 
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                      }}
+                      className="result-image"
                       onClick={() => window.open(item.url, '_blank')}
                       onError={(e) => {
                         console.error('Image load error for:', item.thumb);
                         e.target.style.display = 'none';
                       }}
                     />
-                    <div style={{ marginTop: '10px' }}>
-                      <h5 style={{ margin: '0 0 5px 0', fontSize: '14px', fontWeight: 'bold' }}>
-                        🖼️ {item.fileName || `Image ${idx + 1}`}
+                    <div className="file-details">
+                      <h5 className="file-title">
+                        {item.fileName || `Image ${idx + 1}`}
                       </h5>
                       {item.detectedBirds && (
-                        <p style={{ fontSize: '11px', color: '#28a745', margin: '3px 0', fontWeight: '500' }}>
-                          🐦 Birds: {Object.entries(item.detectedBirds).map(([bird, count]) => `${bird}(${count})`).join(', ')}
+                        <p className="bird-info">
+                          Birds: {Object.entries(item.detectedBirds).map(([bird, count]) => `${bird}(${count})`).join(', ')}
                         </p>
                       )}
-                      <div style={{ fontSize: '9px', color: '#6c757d', marginTop: '8px' }}>
-                        <strong>📎 S3 URL:</strong><br/>
-                        <a href={item.thumb} target="_blank" rel="noopener noreferrer" 
-                           style={{ wordBreak: 'break-all', color: '#007bff' }}>
+                      <div className="url-section">
+                        <span className="url-label">S3 URL:</span>
+                        <a href={item.thumb} target="_blank" rel="noopener noreferrer" className="url-link">
                           {item.thumb}
                         </a>
                       </div>
@@ -332,50 +312,32 @@ function FileTagSearch() {
                 {item.type === 'video' && (
                   <div>
                     <div 
-                      style={{ 
-                        position: 'relative',
-                        cursor: 'pointer',
-                        borderRadius: '5px',
-                        overflow: 'hidden'
-                      }}
+                      className="video-container"
                       onClick={() => window.open(item.url, '_blank')}
                     >
                       <video 
-                        width="100%" 
-                        height="180" 
-                        style={{ borderRadius: '5px' }}
+                        className="video-element"
                         poster={item.thumb}
                       >
                         <source src={item.url} />
                         Your browser does not support video.
                       </video>
-                      <div style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'rgba(0,0,0,0.7)',
-                        color: 'white',
-                        padding: '10px',
-                        borderRadius: '50%',
-                        fontSize: '20px'
-                      }}>
-                        ▶️
+                      <div className="play-button">
+                        ▶
                       </div>
                     </div>
-                    <div style={{ marginTop: '10px' }}>
-                      <h5 style={{ margin: '0 0 5px 0', fontSize: '14px', fontWeight: 'bold' }}>
-                        🎥 {item.fileName || `Video ${idx + 1}`}
+                    <div className="file-details">
+                      <h5 className="file-title">
+                        {item.fileName || `Video ${idx + 1}`}
                       </h5>
                       {item.detectedBirds && (
-                        <p style={{ fontSize: '11px', color: '#28a745', margin: '3px 0', fontWeight: '500' }}>
-                          🐦 Birds: {Object.entries(item.detectedBirds).map(([bird, count]) => `${bird}(${count})`).join(', ')}
+                        <p className="bird-info">
+                          Birds: {Object.entries(item.detectedBirds).map(([bird, count]) => `${bird}(${count})`).join(', ')}
                         </p>
                       )}
-                      <div style={{ fontSize: '9px', color: '#6c757d', marginTop: '8px' }}>
-                        <strong>📎 S3 URL:</strong><br/>
-                        <a href={item.url} target="_blank" rel="noopener noreferrer" 
-                           style={{ wordBreak: 'break-all', color: '#007bff' }}>
+                      <div className="url-section">
+                        <span className="url-label">S3 URL:</span>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="url-link">
                           {item.url}
                         </a>
                       </div>
@@ -385,36 +347,27 @@ function FileTagSearch() {
                 
                 {item.type === 'audio' && (
                   <div>
-                    <div style={{ 
-                      height: '180px', 
-                      backgroundColor: '#f8f9fa', 
-                      borderRadius: '5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '10px'
-                    }}>
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '48px', marginBottom: '10px' }}>🎵</div>
-                        <audio controls style={{ width: '100%' }}>
+                    <div className="audio-container">
+                      <div className="audio-content">
+                        <div className="audio-icon">♪</div>
+                        <audio controls className="audio-controls">
                           <source src={item.url} />
                           Your browser does not support audio.
                         </audio>
                       </div>
                     </div>
-                    <div>
-                      <h5 style={{ margin: '0 0 5px 0', fontSize: '14px', fontWeight: 'bold' }}>
-                        🎵 {item.fileName || `Audio ${idx + 1}`}
+                    <div className="file-details">
+                      <h5 className="file-title">
+                        {item.fileName || `Audio ${idx + 1}`}
                       </h5>
                       {item.detectedBirds && (
-                        <p style={{ fontSize: '11px', color: '#28a745', margin: '3px 0', fontWeight: '500' }}>
-                          🐦 Birds: {Object.entries(item.detectedBirds).map(([bird, count]) => `${bird}(${count})`).join(', ')}
+                        <p className="bird-info">
+                          Birds: {Object.entries(item.detectedBirds).map(([bird, count]) => `${bird}(${count})`).join(', ')}
                         </p>
                       )}
-                      <div style={{ fontSize: '9px', color: '#6c757d', marginTop: '8px' }}>
-                        <strong>🔗 Audio URL:</strong><br/>
-                        <a href={item.url} target="_blank" rel="noopener noreferrer" 
-                           style={{ wordBreak: 'break-all', color: '#007bff' }}>
+                      <div className="url-section">
+                        <span className="url-label">Audio URL:</span>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="url-link">
                           {item.url}
                         </a>
                       </div>
