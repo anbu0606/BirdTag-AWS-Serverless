@@ -1,0 +1,18 @@
+# Base: AWS Lambda Python 3.10
+FROM public.ecr.aws/lambda/python:3.10
+
+# Install libsndfile for soundfile (pysoundfile) support
+RUN yum update -y && \
+    yum install -y libsndfile && \
+    yum clean all && rm -rf /var/cache/yum
+
+# Install Python packages
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy function code
+COPY lambda_audio.py .
+
+
+# Set the CMD to your handler (file.function)
+CMD ["lambda_audio.lambda_handler"]

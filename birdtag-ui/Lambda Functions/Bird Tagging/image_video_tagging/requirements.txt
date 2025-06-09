@@ -1,0 +1,5 @@
+ultralytics
+supervision
+opencv-python-headless
+boto3
+numpy==1.26.4
