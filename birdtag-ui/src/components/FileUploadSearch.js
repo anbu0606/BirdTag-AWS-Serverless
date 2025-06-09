@@ -11,7 +11,7 @@ function FileTagSearch() {
   const auth = useAuth();
   const token = auth.user?.id_token;
 
-  // Your deployed endpoints
+  // endpoints
   const API_IMAGE_VIDEO = 'https://j3iw3py8vb.execute-api.ap-southeast-2.amazonaws.com/fileBasedTagImgVid/FileBasedTagImgVidAPI';
   const API_AUDIO = 'https://ns03wx51yk.execute-api.ap-southeast-2.amazonaws.com/fileBasedTagAudio/FileBasedTagAudioAPI';
   const API_LAMBDA_QUERY = 'https://l1fqf07eb1.execute-api.ap-southeast-2.amazonaws.com/returnfilebasedquery/returnfilebasedqueryAPI';
@@ -79,7 +79,7 @@ function FileTagSearch() {
       extractionMethod = 'species field';
     }
     
-    // Clean up extracted tags
+  
     const cleanTags = extractedTags
       .map(tag => tag.toString().toLowerCase().trim())
       .filter(tag => tag.length > 0 && tag !== 'unknown' && tag !== 'null')
@@ -323,7 +323,7 @@ function FileTagSearch() {
                         Your browser does not support video.
                       </video>
                       <div className="play-button">
-                        ▶
+                        
                       </div>
                     </div>
                     <div className="file-details">
@@ -349,7 +349,7 @@ function FileTagSearch() {
                   <div>
                     <div className="audio-container">
                       <div className="audio-content">
-                        <div className="audio-icon">♪</div>
+                        <div className="audio-icon"></div>
                         <audio controls className="audio-controls">
                           <source src={item.url} />
                           Your browser does not support audio.
