@@ -11,10 +11,11 @@ function BulkTagUpdater() {
   const [loading, setLoading] = useState(false);
 
   const auth = useAuth();
+  const token = auth.user?.id_token;
   const API_URL = 'https://opjoc8qoq6.execute-api.ap-southeast-2.amazonaws.com/bulktag/manualtagging';
 
   const handleSubmit = async () => {
-    if (!auth?.user?.access_token) {
+    if (!auth?.user?.id_token) {
       setStatus('You must be logged in.');
       return;
     }
@@ -49,7 +50,7 @@ function BulkTagUpdater() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${auth.user.access_token}`,
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           url: urlArray,
@@ -58,12 +59,35 @@ function BulkTagUpdater() {
         }),
       });
 
-      const result = await response.json();
+      const rawResult = await response.json();
+      const result = typeof rawResult.body === 'string' ? JSON.parse(rawResult.body) : rawResult;
+
 
       if (!response.ok) {
         setStatus('Error: ' + (result.error || 'Unknown error'));
       } else {
-        setStatus(result.message || 'Tags updated successfully.');
+        const updated = result.updated || [];
+        const skipped = result.skipped || [];
+       
+
+        if (skipped.length > 0 && updated.length === 0) {
+          setStatus(
+            ` The following file(s) cannot be edited right now due to temporary lock:\n` +
+            skipped.join('\n') +
+            `\n\nPlease try again after 30 seconds.`
+          );
+        } else if (skipped.length > 0) {
+          setStatus(
+            `Tags updated for:\n` +
+            updated.join('\n') +
+            `\n\n Skipped (due to recent edits):\n` +
+            skipped.join('\n') +
+            `\n\nPlease retry those after 30 seconds.`
+          );
+
+        } else {
+          setStatus('Tags updated successfully.');
+        }
       }
     } catch (err) {
       console.error(err);
@@ -118,7 +142,11 @@ function BulkTagUpdater() {
         {loading ? <ClipLoader size={18} color="#fff" /> : 'Submit'}
       </button>
 
-      {status && <p className="status-text">{status}</p>}
+      {status && (
+        <pre className="status-text" style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
+          {status}
+        </pre>
+      )}
     </div>
   );
 }
