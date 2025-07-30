@@ -16,6 +16,11 @@ function Subscribe() {
       setStatus("Please enter at least one tag.");
       return;
     }
+  
+    if (/\d/.test(speciesInput)) {
+      setStatus("Tags must not contain numbers.");
+      return;
+    }
 
     const cleanedTags = speciesInput
       .split(',')

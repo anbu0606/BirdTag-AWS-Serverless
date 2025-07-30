@@ -62,40 +62,41 @@ function BulkTagUpdater() {
       const rawResult = await response.json();
       const result = typeof rawResult.body === 'string' ? JSON.parse(rawResult.body) : rawResult;
 
-
-      if (!response.ok) {
-        setStatus('Error: ' + (result.error || 'Unknown error'));
-      } else {
-        const updated = result.updated || [];
-        const skipped = result.skipped || [];
-       
-
-        if (skipped.length > 0 && updated.length === 0) {
-          setStatus(
-            ` The following file(s) cannot be edited right now due to temporary lock:\n` +
-            skipped.join('\n') +
-            `\n\nPlease try again after 30 seconds.`
-          );
-        } else if (skipped.length > 0) {
-          setStatus(
-            `Tags updated for:\n` +
-            updated.join('\n') +
-            `\n\n Skipped (due to recent edits):\n` +
-            skipped.join('\n') +
-            `\n\nPlease retry those after 30 seconds.`
-          );
-
+        if (!response.ok) {
+          setStatus('Error: ' + (result.error || 'Unknown error'));
         } else {
-          setStatus('Tags updated successfully.');
+          const updated = result.updated || [];
+          const skipped = result.skipped || [];
+          const notFound = result.notFound || [];
+
+          let message = '';
+
+          if (updated.length > 0) {
+            message += `Tags updated for:\n${updated.join('\n')}\n\n`;
+          }
+
+          if (skipped.length > 0) {
+            message += `Skipped due to recent edits:\n${skipped.join('\n')}\nPlease retry these after 30 seconds.\n\n`;
+          }
+
+          if (notFound.length > 0) {
+            message += `The following URLs were not found in the database:\n${notFound.join('\n')}\nPlease ensure the URLs are correct.\n`;
+          }
+
+          if (!updated.length && !skipped.length && !notFound.length) {
+            message = 'No actions performed.';
+          }
+
+          setStatus(message.trim());
         }
+      } catch (err) {
+        console.error(err);
+        setStatus('Network error.');
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      setStatus('Network error.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+      
 
   return (
     <div className="bulk-tag-container">
